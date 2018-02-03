@@ -62,7 +62,7 @@
       (if (sub-begin? p)
         (recur (inc count) (first q) (rest q) (concat r (list p)))
         (if (sub-end? p)
-          (recur (dec count) (first q) (rest q) r)
+          (recur (dec count) (first q) (rest q) (concat r (list p)) )
           (recur count (first q) (rest q) (concat r (list p)))
           )
         ))
@@ -99,7 +99,10 @@
       (if (empty? r)
         {(keyword k) rt}
         (if (nil? kv)
-          (recur (parse-key line) (first r) (get-struct-lines r) nil (assoc rt (keyword k)  rt))
+          ;; (recur (parse-key line) (first r) (get-struct-lines r) nil rt)
+          (let [subs (get-struct-lines r)]
+            
+            )
           (recur k (first r) (rest r) (first  (keys kv)) (conj rt  ck))
           )
         )))
