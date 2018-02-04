@@ -3,9 +3,11 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [
                  [com.google.protobuf/protobuf-java "2.5.0"]
-                 [org.flatland/protobuf "0.7.0"]]
+                 [org.clojure/clojure "1.8.0"]
+                 [org.flatland/protobuf "0.7.0"]
+                 ]
   :main ^:skip-aot pb-parse.core
   :target-path "target/%s"
   :bin {:name "pb-parse"}

@@ -22,7 +22,7 @@
 
 (defn parse-kv [line]
   (let [[k v] (map s/trim  (s/split line #":"))]
-    (if (and  (not (empty? k)) (not (empty? v))) 
+    (if (and  (not (empty? k)) (not (empty? v)))
       {(keyword k) (value-of  v)}
       nil
       )))
@@ -100,7 +100,11 @@
         {(keyword k) rt}
         (if (nil? kv)
           ;; (recur (parse-key line) (first r) (get-struct-lines r) nil rt)
-          (let [subs (get-struct-lines r)]
+          (let [subs (get-struct-lines r)
+                rs  (drop (inc  (count subs)) r)
+                ]
+            (recur k (first rs) (rest rs) nil
+                   (conj rt (parse-struct (parse-key line) subs)))
             
             )
           (recur k (first r) (rest r) (first  (keys kv)) (conj rt  ck))
@@ -115,9 +119,13 @@
          r (rest lines)
          rt '()
          ]
-    (if (empty? r)
-      (concat rt (list kv))
-      
+    (if (nil? kv)
+      (let [subs (get-struct-lines r)
+            rs (drop (inc (count subs)) r)]
+        (recur (first rs) (parse-kv (first rs)) (rest rs)
+               (conj rt (parse-struct (parse-key line) subs)))
+        )
+      (recur (first r) (parse-kv (first r)) (rest r) (conj rt kv))
       )
     )
   )
